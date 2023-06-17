@@ -1,0 +1,53 @@
+#!./venv/bin/python3
+import json
+
+
+def find_letter():
+    find_list = []
+    export_dict = {}
+    find_letter = input("Введите букву для поиска в тексте: ").lower()
+    text = input("Введите текст для поиска буквы: ").lower()
+    print(f"---start find -{find_letter}- letter in your text------ ")
+    for z in [".", ",", "!", "?", "-"]:
+        text.replace(z, "")
+    text_list = text.split(" ")
+    for word in text_list:
+        if find_letter in word:
+            find_list.append(word)
+    if len(find_list) > 0:
+        export_dict[find_letter] = find_list
+        print(f"---find {len(find_list)} word with -{find_letter}- letter ")
+        print("---export to file - find_word.json---")
+        with open(f'./find_word.json', 'a') as f:
+            f.write(json.dumps(export_dict))
+    else:
+        print(f"Sorry we cant find any word with -{find_letter}- letter")
+
+
+def check_aliteration():
+    aliteration_dict = {}
+    #сколько букв с начала слова проверяем
+    let_c = 3
+    alliteration = False
+    letters = ["ц", "к", "н", "г", "ш", "щ", "з", "х", "ф", "в", "п", "р", "л", "д", "ж", "ч", "с", "м", "т", "б"]
+    text = input("Enter text for find alliteration: ").lower()
+    for z in [".", ",", "!", "?", "-", ";", ":"]:
+        text.replace(z, "")
+    text_list = text.split(" ")
+    for word in text_list:
+        if text_list.index(word) <= len(text_list) - 4:
+            find_list = [text_list[text_list.index(word) + 1], text_list[text_list.index(word) + 2], text_list[text_list.index(word) + 3]]
+            for l in letters:
+                if l in word[:let_c]:
+                    if l in find_list[0][:let_c] or l in find_list[1][:let_c] or l in find_list[2][:let_c]:
+                        print(f"Find alliteration with letter ( {l} ), words: {word}, {find_list}")
+                        alliteration = True
+                        find_list.append(word)
+                        aliteration_dict['l'] = find_list
+    if not alliteration:
+        print("Alliteration not found")
+
+
+if __name__ == '__main__':
+    find_letter()
+    check_aliteration()
