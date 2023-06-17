@@ -1,0 +1,30 @@
+import json
+from json import loads
+from dicttoxml import dicttoxml
+
+combos = (('тр', 'ст', 'с'), ('tr', 'st', 's'))
+text = 'Тревожиться Тарас не перестал, несмотря на успокаивающий треск костра'
+
+result = {}
+
+for i, combo in enumerate(combos[0]):
+    sound = combos[1][i]
+    result[sound] = []
+
+    for j, word in enumerate(text.split()):
+        if combo in word:
+            if (combo == 'тр' and word.count('тр') == 1) or (combo == 'ст' and word.count('ст') == 1):
+                result[sound].append(j)
+
+json_obj = json.dumps(result)
+
+xml = dicttoxml(loads(json_obj))
+
+f = open("result.json", "w")
+f.write(json_obj)
+f.close()
+
+f1 = open("result.xml", "w")
+f1.write(str(xml))
+f1.close()
+
